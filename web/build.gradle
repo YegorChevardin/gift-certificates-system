@@ -1,19 +1,6 @@
-plugins {
-    id 'java'
-}
-
-group 'ua.com.epam.lab.yegorchevardin.spring.certificatesystem'
-version 'unspecified'
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-}
-
-test {
-    useJUnitPlatform()
+    implementation project(':service')
+    implementation "org.springframework:spring-webmvc:${springVersion}"
+    compileOnly "jakarta.servlet:jakarta.servlet-api:6.0.0"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2"
 }

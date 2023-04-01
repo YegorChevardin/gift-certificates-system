@@ -1,19 +1,14 @@
-plugins {
-    id 'java'
-}
-
-group 'ua.com.epam.lab.yegorchevardin.spring.certificatesystem'
-version 'unspecified'
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation project(':repository')
+    testImplementation "org.mockito:mockito-core:5.2.0"
 }
 
-test {
-    useJUnitPlatform()
+jar {
+    dependsOn project(':repository').classes
+    manifest {
+        attributes (
+                'Implementation-Title': 'CertificateSystemService',
+                'Implementation-Version': '1.0.0'
+        )
+    }
 }
