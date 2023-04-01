@@ -1,0 +1,15 @@
+dependencies {
+    implementation "com.mysql:mysql-connector-j:8.0.32"
+    implementation "org.springframework:spring-jdbc:${springVersion}"
+    implementation "com.zaxxer:HikariCP:5.0.1"
+    testImplementation "com.h2database:h2:2.1.214"
+}
+
+jar {
+    manifest {
+        attributes (
+                'Implementation-Title': 'CertificateSystemRepository',
+                'Implementation-Version': '1.0.0'
+        )
+    }
+}

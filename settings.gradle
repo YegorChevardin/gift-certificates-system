@@ -9,3 +9,7 @@
  */
 
 rootProject.name = 'gift-certificate-system'
+include 'repository'
+include 'service'
+include 'web'
+
