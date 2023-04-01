@@ -11,7 +11,7 @@ dependencies {
 
 war {
     webAppDirName = 'src/main/webapp'
-    archivesBaseName 'certificate-system.war'
+    archivesBaseName 'certificate-system'
     manifest {
         attributes 'Main-Class': 'ua.com.epam.lab.yegorchevardin.spring.certificatesystem',
                 'Implementation-Title': 'CertificateSystem',
