@@ -1,0 +1,14 @@
+dependencies {
+    implementation project(':repository')
+    testImplementation "org.mockito:mockito-core:5.2.0"
+}
+
+jar {
+    dependsOn project(':repository').classes
+    manifest {
+        attributes (
+                'Implementation-Title': 'CertificateSystemService',
+                'Implementation-Version': '1.0.0'
+        )
+    }
+}
