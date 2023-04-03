@@ -1,6 +1,6 @@
 package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dao;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Interface that represents create, read and delete operations in the database
@@ -20,7 +20,7 @@ public interface CreateReadDeleteDAO<T> {
      * Method for getting a collection of objects {@link T} datatype
      * @return A collection of {@link T} objects
      */
-    Collection<T> getAll();
+    List<T> getAll();
 
     /**
      * Method for saving an entity of {@link T} datatype
