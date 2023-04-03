@@ -1,19 +1,18 @@
 package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.constants;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * Hard coded column values of tag table
- * for Tag entity
+ * Constants that representing allowed sorting parameters
  * @author Yehor Chevardin
  * @version 1.0.0
  */
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public enum TagColumns {
-    ID("id"),
-    NAME("name");
+@AllArgsConstructor
+public enum SortingParameters {
+    DATE_SORT("date_sort"),
+    NAME_SORT("name_sort"),
+    TAG_SORT("tag_sort");
 
     @Getter
     private final String value;
