@@ -2,8 +2,6 @@ package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dao;
 
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.entities.Tag;
 
-import java.util.Optional;
-
 /**
  * Interface for abstraction of TagDAO
  * @author Yehor Chevardin
@@ -17,5 +15,5 @@ public interface TagDAO
      * @param name entity name
      * @return an {@link Tag} entity
      */
-    Optional<Tag> getByName(String name);
+    Tag getByName(String name);
 }
