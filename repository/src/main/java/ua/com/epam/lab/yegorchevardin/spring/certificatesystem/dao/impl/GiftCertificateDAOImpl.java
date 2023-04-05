@@ -11,11 +11,12 @@ import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.constants.GiftCer
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dao.AbstractDAO;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dao.GiftCertificateDAO;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dao.TagDAO;
+import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dao.tools.QueryBuilder;
+import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dao.tools.extractors.GiftCertificateFieldExtractor;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.entities.GiftCertificate;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.entities.Tag;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.exceptions.DataNotFoundException;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.exceptions.SaveException;
-
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -33,14 +34,17 @@ public class GiftCertificateDAOImpl
         extends AbstractDAO<GiftCertificate>
         implements GiftCertificateDAO {
     private final TagDAO tagDAO;
+    private final GiftCertificateFieldExtractor giftCertificateFieldExtractor;
 
     @Autowired
     public GiftCertificateDAOImpl(
             TagDAO tagDAO,
             JdbcTemplate jdbcTemplate,
-            ResultSetExtractor<List<GiftCertificate>> resultSetExtractor) {
+            ResultSetExtractor<List<GiftCertificate>> resultSetExtractor,
+            GiftCertificateFieldExtractor giftCertificateFieldExtractor) {
         super(jdbcTemplate, resultSetExtractor);
         this.tagDAO = tagDAO;
+        this.giftCertificateFieldExtractor = giftCertificateFieldExtractor;
     }
 
     @Override
@@ -90,12 +94,29 @@ public class GiftCertificateDAOImpl
 
     @Override
     public void removeById(long id) {
-        //todo
+        int affectedRows = executeUpdateQuery(
+                GiftCertificateQueries.DELETE_BY_ID.getValue(),
+                id
+        );
     }
 
     @Override
+    @Transactional
     public void update(GiftCertificate item) {
-
+        Map<String, String> params = giftCertificateFieldExtractor.extractData(item);
+        int affectedRows = executeUpdateQuery(
+                new QueryBuilder().buildUpdateQuery(
+                        GiftCertificateQueries.UPDATE_CERTIFICATE.getValue(),
+                        params)
+        );
+        if (affectedRows == 0) {
+            throw new DataNotFoundException(
+                    "Could not find entity with this id:" + item.getId()
+            );
+        }
+        if (item.getTags() != null) {
+            updateCertificateTags(item);
+        }
     }
 
     @Override
@@ -131,5 +152,20 @@ public class GiftCertificateDAOImpl
             newTagsWithId.add(tagWithId);
         });
         return newTagsWithId;
+    }
+
+    private void updateCertificateTags(GiftCertificate item) {
+        List<Tag> newTags = createTagsWithId(item.getTags());
+        executeUpdateQuery(
+                GiftCertificateQueries.DELETE_ASSOCIATED_TAGS.getValue(),
+                item.getId()
+        );
+        newTags.forEach((newTag) ->
+                executeUpdateQuery(
+                        GiftCertificateQueries.INSERT_CERTIFICATE_TAGS_RELATION.getValue(),
+                        item.getId(),
+                        newTag.getId()
+                )
+        );
     }
 }
