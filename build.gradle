@@ -9,10 +9,12 @@ subprojects {
 
     ext {
         springVersion = "6.0.7"
+        lombokDependency = "org.projectlombok:lombok:1.18.26"
     }
 
     dependencies {
-        compileOnly "org.projectlombok:lombok:1.18.26"
+        compileOnly lombokDependency
+        annotationProcessor lombokDependency
 
         implementation "org.springframework:spring-core:${springVersion}"
         implementation "org.springframework:spring-context:${springVersion}"

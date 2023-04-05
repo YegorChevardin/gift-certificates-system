@@ -2,7 +2,6 @@ package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.constants;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
 /**
  * Constants that representing allowed sorting parameters
  * @author Yehor Chevardin
