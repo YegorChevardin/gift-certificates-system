@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `gift_certificates` (
   `name` VARCHAR(45) NOT NULL,
   `description` TEXT(500) NULL,
   `price` FLOAT NOT NULL,
-  `duration` DATETIME NOT NULL,
+  `duration` INT NOT NULL,
   `create_date` TIMESTAMP NOT NULL,
   `last_update_date` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`),
