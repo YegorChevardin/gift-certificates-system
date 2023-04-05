@@ -4,17 +4,19 @@ plugins {
 
 dependencies {
     implementation project(':service')
+    implementation project(':repository')
     implementation "org.springframework:spring-webmvc:${springVersion}"
     compileOnly "jakarta.servlet:jakarta.servlet-api:6.0.0"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2"
 }
 
 war {
+    dependsOn project(':service').classes
+    dependsOn project(':repository').classes
     webAppDirName = 'src/main/webapp'
     archivesBaseName 'certificate-system'
     manifest {
-        attributes 'Main-Class': 'ua.com.epam.lab.yegorchevardin.spring.certificatesystem',
-                'Implementation-Title': 'CertificateSystem',
+        attributes 'Implementation-Title': 'CertificateSystem',
                 'Implementation-Version': '1.0.0'
     }
 }
