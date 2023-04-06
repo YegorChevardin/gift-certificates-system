@@ -1,8 +1,7 @@
 package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.responces;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
@@ -11,8 +10,8 @@ import java.time.LocalDateTime;
  * @version 1.0.0
  */
 @Getter
+@AllArgsConstructor
 public class DTOResponse<T> {
-    private final Timestamp sendAt =
-            Timestamp.valueOf(LocalDateTime.now());
+    private LocalDateTime sendAt;
     private T responseEntity;
 }
