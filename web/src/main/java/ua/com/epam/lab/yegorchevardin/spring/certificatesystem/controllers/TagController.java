@@ -27,7 +27,7 @@ public class TagController {
      */
     @GetMapping
     public ResponseEntity<TagListResponse> showAllTags() {
-        return ResponseEntity.ok().body(
+        return ResponseEntity.ok(
                 new TagListResponse(
                         LocalDateTime.now(),
                         tagService.getAll()

@@ -2,6 +2,9 @@ package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dtos;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 /**
  * Data transfer object for GiftCertificate entity
  * @author Yehor Chevardin
@@ -9,4 +12,12 @@ import lombok.Data;
  */
 @Data
 public class GiftCertificateDTO {
+    private Long id;
+    private String name;
+    private String description;
+    private Float price;
+    private Integer duration;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastUpdateDate;
+    private List<TagDTO> tags;
 }

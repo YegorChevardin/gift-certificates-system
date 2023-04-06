@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @AllArgsConstructor
-public class DTOResponse<T> {
+public abstract class DTOResponse<T> {
     private LocalDateTime sendAt;
     private T responseEntity;
 }

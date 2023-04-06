@@ -2,8 +2,6 @@ package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.responces.impl;
 
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dtos.TagDTO;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.responces.DTOResponse;
-
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 

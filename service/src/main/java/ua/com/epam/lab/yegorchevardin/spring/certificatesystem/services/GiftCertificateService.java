@@ -8,5 +8,4 @@ import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dtos.GiftCertific
  * @version 1.0.0
  */
 public interface GiftCertificateService extends CRUDService<GiftCertificateDTO> {
-    //todo additional methods
 }
