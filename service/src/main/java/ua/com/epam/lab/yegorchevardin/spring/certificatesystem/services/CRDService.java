@@ -11,6 +11,7 @@ public interface CRDService<T> {
     /**
      * Method for insertion object into database
      * @param object Object to insert
+     * @return T created object
      */
     void insertNewObject(T object);
 

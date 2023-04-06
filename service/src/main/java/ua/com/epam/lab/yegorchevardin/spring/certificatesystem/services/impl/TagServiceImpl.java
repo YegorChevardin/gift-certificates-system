@@ -18,7 +18,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public void insertNewObject(TagDTO object) {
-
+        tagDAO.insert(tagConvertor.convertToEntity(object));
     }
 
     @Override
@@ -30,11 +30,11 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagDTO getById(Long id) {
-        return null;
+        return tagConvertor.convertToDTO(tagDAO.getById(id));
     }
 
     @Override
     public void deleteById(Long id) {
-
+        tagDAO.removeById(id);
     }
 }
