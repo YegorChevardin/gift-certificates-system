@@ -19,7 +19,11 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public void insertNewObject(TagDTO object) {
-        checkIfTagExist(object.getName());
+        if (checkIfTagExist(object.getName())) {
+            throw new DataFoundException(
+                    "Tag with this name is already exist: " + object.getName()
+            );
+        }
         tagDAO.insert(tagConvertor.convertToEntity(object));
     }
 
@@ -40,13 +44,12 @@ public class TagServiceImpl implements TagService {
         tagDAO.removeById(id);
     }
 
-    private void checkIfTagExist(String name) {
+    private boolean checkIfTagExist(String name) {
         try {
-            if (tagDAO.getByName(name) != null) {
-                throw new DataFoundException(
-                        "Tag with this name is already exist: " + name
-                );
-            }
-        } catch (DataNotFoundException ignored) {}
+            tagDAO.getByName(name);
+        } catch (DataNotFoundException ignored) {
+            return false;
+        }
+        return true;
     }
 }
