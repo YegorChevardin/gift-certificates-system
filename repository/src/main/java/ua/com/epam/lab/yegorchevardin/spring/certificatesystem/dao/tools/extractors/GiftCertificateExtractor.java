@@ -31,12 +31,16 @@ public class GiftCertificateExtractor implements ResultSetExtractor<List<GiftCer
             certificate.setName(rs.getString(GiftCertificateColumns.NAME.getValue()));
             certificate.setDescription(rs.getString(GiftCertificateColumns.DESCRIPTION.getValue()));
             certificate.setDuration(rs.getInt(GiftCertificateColumns.DURATION.getValue()));
-            certificate.setCreatedDate(LocalDateTime.parse(
-                    rs.getString(GiftCertificateColumns.CREATE_DATE.getValue())
-            ));
-            certificate.setLastUpdateDate(LocalDateTime.parse(
-                    rs.getString(GiftCertificateColumns.LAST_UPDATE_DATE.getValue())
-            ));
+            certificate.setCreatedDate(
+                    String.valueOf(
+                            rs.getTimestamp(GiftCertificateColumns.CREATE_DATE.getValue())
+                                    .toLocalDateTime()
+                    )
+            );
+            certificate.setLastUpdateDate(
+                    String.valueOf(rs.getTimestamp(GiftCertificateColumns.LAST_UPDATE_DATE.getValue())
+                            .toLocalDateTime())
+            );
             certificate.setPrice(rs.getFloat(GiftCertificateColumns.PRICE.getValue()));
 
             List<Tag> tags = extractTagList(certificate.getId(), rs);
@@ -49,11 +53,11 @@ public class GiftCertificateExtractor implements ResultSetExtractor<List<GiftCer
     private List<Tag> extractTagList(long certificateId, ResultSet rs) throws SQLException {
         List<Tag> tags = new ArrayList<>();
         while (!rs.isAfterLast()
-                && rs.getLong("id") == certificateId
+                && rs.getLong("gift_certificate_id") == certificateId
                 && rs.getLong("tag_id") != 0) {
             Tag tag = new Tag();
-            tag.setId(rs.getLong("tag_id"));
-            tag.setName(rs.getString("tag_name"));
+            tag.setId(rs.getLong("t.id"));
+            tag.setName(rs.getString("t.name"));
             tags.add(tag);
             rs.next();
         }

@@ -1,6 +1,5 @@
 package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.responces;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import java.time.LocalDateTime;
 
@@ -10,8 +9,11 @@ import java.time.LocalDateTime;
  * @version 1.0.0
  */
 @Getter
-@AllArgsConstructor
 public abstract class DTOResponse<T> {
-    private LocalDateTime sendAt;
-    private T responseEntity;
+    private final String sendAt = LocalDateTime.now().toString();
+    private final T data;
+
+    public DTOResponse(T data) {
+        this.data = data;
+    }
 }

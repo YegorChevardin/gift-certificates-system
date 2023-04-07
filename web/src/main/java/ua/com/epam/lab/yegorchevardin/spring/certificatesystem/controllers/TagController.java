@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.responces.impl.TagListResponse;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.services.TagService;
 
-import java.time.LocalDateTime;
-
 /**
  * Controller for handling responses for TagsDTO
  * @author Yehor Chevardin
@@ -29,7 +27,6 @@ public class TagController {
     public ResponseEntity<TagListResponse> showAllTags() {
         return ResponseEntity.ok(
                 new TagListResponse(
-                        LocalDateTime.now(),
                         tagService.getAll()
                 )
         );

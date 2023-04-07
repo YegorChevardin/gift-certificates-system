@@ -4,15 +4,14 @@ import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dtos.GiftCertific
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.responces.DTOResponse;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
- * Class for getting response with List of Gift Certificate
+ * Class for getting response with Gift Certificate dto object
  * @author Yehor Chevardin
  * @version 1.0.0
  */
-public class GiftCertificateListResponse extends DTOResponse<List<GiftCertificateDTO>> {
-    public GiftCertificateListResponse(List<GiftCertificateDTO> responseEntity) {
+public class GiftCertificateResponse extends DTOResponse<GiftCertificateDTO> {
+    public GiftCertificateResponse(GiftCertificateDTO responseEntity) {
         super(responseEntity);
     }
 }
