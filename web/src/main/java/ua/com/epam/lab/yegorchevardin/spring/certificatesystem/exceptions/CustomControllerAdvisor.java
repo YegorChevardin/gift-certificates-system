@@ -41,11 +41,17 @@ public class CustomControllerAdvisor extends ResponseEntityExceptionHandler {
     /**
      * Method for handling DataNotFoundException, which will return 404 error
      */
-    @ExceptionHandler({
-            DataNotFoundException.class
-    })
+    @ExceptionHandler(DataNotFoundException.class)
     public ResponseEntity<Object> handleDataNotFoundException(Exception exception) {
         return wrapExceptionToMap(exception, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Method for handling DataFoundException, which will return 404 error
+     */
+    @ExceptionHandler(DataFoundException.class)
+    public ResponseEntity<Object> handleDataFoundException(Exception exception) {
+        return wrapExceptionToMap(exception, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     /**

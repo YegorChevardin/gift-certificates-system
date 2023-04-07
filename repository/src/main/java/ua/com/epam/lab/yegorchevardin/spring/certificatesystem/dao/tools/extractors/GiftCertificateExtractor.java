@@ -6,10 +6,8 @@ import org.springframework.stereotype.Component;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.constants.GiftCertificateColumns;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.entities.GiftCertificate;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.entities.Tag;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,7 +1,6 @@
 package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.controllers;
 
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -38,6 +37,9 @@ public class GiftCertificateController {
         );
     }
 
+    /**
+     * Method for handling finding gift certificate by id
+     */
     @GetMapping("/{id}")
     public ResponseEntity<GiftCertificateResponse> showGiftCertificate(
             @PathVariable @Min(0) Long id) {
