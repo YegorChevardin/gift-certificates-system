@@ -20,6 +20,7 @@ import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.exceptions.SaveEx
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -51,9 +52,22 @@ public class GiftCertificateDAOImpl
     public GiftCertificate getById(Long id) {
         return executeQueryAsSingleEntity(
                 GiftCertificateQueries.SELECT_CERTIFICATE_BY_ID.getValue(),
-                id).orElseThrow(
+                id
+        ).orElseThrow(
                 () -> new DataNotFoundException(
-                        "Cannot find gift certificates by this id:" + id
+                        "Cannot find gift certificates by this id: " + id
+                )
+        );
+    }
+
+    @Override
+    public GiftCertificate getByName(String name) {
+        return executeQueryAsSingleEntity(
+                GiftCertificateQueries.SELECT_CERTIFICATE_BY_NAME.getValue(),
+                name
+        ).orElseThrow(
+                () -> new DataNotFoundException(
+                        "Cannot find gift certificate by this name: " + name
                 )
         );
     }
@@ -79,22 +93,27 @@ public class GiftCertificateDAOImpl
                     ps.setString(++count, entity.getName());
                     ps.setString(++count, entity.getDescription());
                     ps.setInt(++count, entity.getDuration());
-                    ps.setTimestamp(++count, Timestamp.valueOf(entity.getCreatedDate()));
-                    ps.setTimestamp(++count, Timestamp.valueOf(entity.getLastUpdateDate()));
+                    ps.setTimestamp(++count, Timestamp.valueOf(LocalDateTime.now()));
+                    ps.setTimestamp(++count, Timestamp.valueOf(LocalDateTime.now()));
                     ps.setFloat(++count, entity.getPrice());
                     return ps;
                 },
                 keyHolder
         );
-        entity.setId(getCreatedId(keyHolder));
-        if (entity.getTags() == null) {
+        if (keyHolder.getKey() == null) {
+            throw new SaveException(
+                    "GiftCertificate cannot be saved in the database"
+            );
+        }
+        entity.setId(keyHolder.getKey().longValue());
+        if (entity.getTags() != null) {
             addNewTagsToCertificate(entity);
         }
     }
 
     @Override
     public void removeById(long id) {
-        int affectedRows = executeUpdateQuery(
+        executeUpdateQuery(
                 GiftCertificateQueries.DELETE_BY_ID.getValue(),
                 id
         );
@@ -103,6 +122,7 @@ public class GiftCertificateDAOImpl
     @Override
     @Transactional
     public void update(GiftCertificate item) {
+        item.setLastUpdateDate(String.valueOf(LocalDateTime.now()));
         Map<String, String> params = giftCertificateFieldExtractor.extractData(item);
         int affectedRows = executeUpdateQuery(
                 new QueryBuilder().buildUpdateQuery(
@@ -125,13 +145,13 @@ public class GiftCertificateDAOImpl
     }
 
     private long getCreatedId(KeyHolder keyHolder){
-        Map<String, Object> keys = keyHolder.getKeys();
+        List<Map<String, Object>> keys = keyHolder.getKeyList();
         if (keys == null) {
             throw new SaveException(
                     "GiftCertificate with id " + keyHolder.getKey() + " cannot be saved in the database"
             );
         }
-        return (long) keys.get("id");
+        return (long) keys.get(0).get("GENERATED_KEY");
     }
 
     private void addNewTagsToCertificate(GiftCertificate entity) {

@@ -1,13 +1,12 @@
 package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.controllers;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dtos.GiftCertificateDTO;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.responces.impl.GiftCertificateListResponse;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.responces.impl.GiftCertificateResponse;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.services.GiftCertificateService;
@@ -46,6 +45,48 @@ public class GiftCertificateController {
         return ResponseEntity.ok(
                 new GiftCertificateResponse(
                         giftCertificateService.getById(id)
+                )
+        );
+    }
+
+    /**
+     * Method for handling creation of new gift certificate
+     */
+    @PostMapping
+    public ResponseEntity<GiftCertificateListResponse> createNewGiftCertificate(
+            @RequestBody @Valid GiftCertificateDTO giftCertificateDTO
+            ) {
+        giftCertificateService.insertNewObject(giftCertificateDTO);
+        return ResponseEntity.ok(
+                new GiftCertificateListResponse(giftCertificateService.getAll())
+        );
+    }
+
+    /**
+     * Method for handling delete action for gift certificate objects
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<GiftCertificateListResponse> deleteGiftCertificate(
+            @PathVariable @Min(0) Long id
+    ) {
+        giftCertificateService.deleteById(id);
+        return ResponseEntity.ok(
+                new GiftCertificateListResponse(
+                        giftCertificateService.getAll()
+                )
+        );
+    }
+
+    /**
+     * Method for handling update action for gift certificate objects
+     */
+    @PutMapping
+    public ResponseEntity<GiftCertificateResponse> updateGiftCertificate(
+            @RequestBody @Valid GiftCertificateDTO giftCertificateDTO
+    ) {
+        return ResponseEntity.ok(
+                new GiftCertificateResponse(
+                        giftCertificateService.update(giftCertificateDTO)
                 )
         );
     }

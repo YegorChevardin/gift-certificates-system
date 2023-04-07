@@ -1,5 +1,6 @@
 package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dtos;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -11,6 +12,7 @@ import org.hibernate.validator.constraints.Length;
 @Data
 public class TagDTO {
     private Long id;
-    @Length(min = 2, max = 45)
+    @NotNull
+    @Length(min = 2, max = 45, message = "Tag name should range between 2 and 45 characters")
     private String name;
 }

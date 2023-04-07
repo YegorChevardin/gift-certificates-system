@@ -8,8 +8,8 @@ package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.services;
 public interface CRUDService<T> extends CRDService<T> {
     /**
      * Method for updating element by id
-     * @param id id of the wanted element
-     * @return T updated element
+     * @param object object to update
+     * @return Updated object
      */
-    T updateById(Long id);
+    T update(T object);
 }
