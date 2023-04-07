@@ -52,4 +52,13 @@ public class TagServiceImpl implements TagService {
         }
         return true;
     }
+
+    private boolean checkIfTagExist(Long id) {
+        try {
+            tagDAO.getById(id);
+        } catch (DataNotFoundException ignored) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -56,6 +56,17 @@ public class TagController {
         return showAllTags();
     }
 
+    /**
+     * Method for deleting tag
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<TagListResponse> deleteTag(
+            @PathVariable Long id
+    ) {
+        tagService.deleteById(id);
+        return showAllTags();
+    }
+
     private ResponseEntity<TagListResponse> showAllTags() {
         return ResponseEntity.ok(
                 new TagListResponse(
