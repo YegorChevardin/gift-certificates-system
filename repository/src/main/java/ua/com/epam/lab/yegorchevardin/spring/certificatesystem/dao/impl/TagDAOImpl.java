@@ -43,7 +43,7 @@ public class TagDAOImpl extends AbstractDAO<Tag> implements TagDAO {
     @Transactional
     @Override
     public void insert(Tag entity) {
-        executeQuery(TagQueries.INSERT_TAGS.getValue(), entity);
+        executeUpdateQuery(TagQueries.INSERT_TAGS.getValue(), entity.getName());
     }
 
     @Override

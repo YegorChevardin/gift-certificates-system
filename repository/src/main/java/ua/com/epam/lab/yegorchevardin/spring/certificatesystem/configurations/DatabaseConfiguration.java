@@ -17,7 +17,7 @@ import javax.sql.DataSource;
  * @author Yehor Chevardin
  * @version 1.0.0
  */
-@PropertySource("classpath:application.properties")
+@PropertySource(value = "classpath:application.properties")
 @Configuration
 @EnableTransactionManagement
 public class DatabaseConfiguration {

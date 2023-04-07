@@ -10,11 +10,11 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 public enum TagQueries {
-    SELECT_BY_ID("select * from tag where id = ?;"),
-    SELECT_BY_NAME("select * from tag where name ilike ?;"),
-    SELECT_ALL_TAGS("select * from tag;"),
-    INSERT_TAGS("insert into tag(name) values (?);"),
-    DELETE_BY_ID("delete from tag where id = ?;");
+    SELECT_BY_ID("select * from tags where id = ?;"),
+    SELECT_BY_NAME("select * from tags where name = ?;"),
+    SELECT_ALL_TAGS("select * from tags;"),
+    INSERT_TAGS("insert into tags(name) values (?);"),
+    DELETE_BY_ID("delete from tags where id = ?;");
 
     @Getter
     private final String value;

@@ -2,6 +2,7 @@ package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.entities;
 
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public class GiftCertificate {
     private String description;
     private Float price;
     private Integer duration;
-    private LocalDateTime createdDate;
-    private LocalDateTime lastUpdateDate;
-    private List<Tag> tags;
+    private String createdDate;
+    private String lastUpdateDate;
+    private List<Tag> tags = new ArrayList<>();
 }

@@ -11,7 +11,7 @@ public interface TagDAO
         extends CreateReadDeleteDAO<Tag>,
         ParametersSearch<Tag> {
     /**
-     * Retrieves an Optional of Tag entity by its name
+     * Retrieves an Tag entity by its name
      * @param name entity name
      * @return an {@link Tag} entity
      */

@@ -10,5 +10,10 @@ import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.entities.GiftCert
 public interface GiftCertificateDAO
         extends CreateReadUpdateDeleteDAO<GiftCertificate>,
         ParametersSearch<GiftCertificate> {
-
+    /**
+     * Retrieves a GiftCertificate entity by its name
+     * @param name entity name
+     * @return an {@link Tag} entity
+     */
+    GiftCertificate getByName(String name);
 }
