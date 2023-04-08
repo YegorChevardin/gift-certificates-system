@@ -4,6 +4,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Component;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.constants.GiftCertificateColumns;
+import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.constants.TagColumns;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.entities.GiftCertificate;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.entities.Tag;
 import java.sql.ResultSet;
@@ -54,8 +55,8 @@ public class GiftCertificateExtractor implements ResultSetExtractor<List<GiftCer
                 && rs.getLong("gift_certificate_id") == certificateId
                 && rs.getLong("tag_id") != 0) {
             Tag tag = new Tag();
-            tag.setId(rs.getLong("t.id"));
-            tag.setName(rs.getString("t.name"));
+            tag.setId(rs.getLong("t." + TagColumns.ID.getValue()));
+            tag.setValue(rs.getString("t." + TagColumns.NAME.getValue()));
             tags.add(tag);
             rs.next();
         }

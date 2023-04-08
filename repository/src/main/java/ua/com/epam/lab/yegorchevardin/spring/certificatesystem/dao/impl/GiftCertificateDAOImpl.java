@@ -1,6 +1,7 @@
 package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,6 +17,7 @@ import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dao.tools.extract
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.entities.GiftCertificate;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.entities.Tag;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.exceptions.DataNotFoundException;
+import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.exceptions.ExecuteQueryRequestException;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.exceptions.SaveException;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -24,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * DAO class for GiftCertificate entities to get them from database
@@ -50,6 +53,10 @@ public class GiftCertificateDAOImpl
 
     @Override
     public GiftCertificate getById(Long id) {
+        return getEntityById(id);
+    }
+
+    private GiftCertificate getEntityById(Long id) {
         return executeQueryAsSingleEntity(
                 GiftCertificateQueries.SELECT_CERTIFICATE_BY_ID.getValue(),
                 id
@@ -77,6 +84,17 @@ public class GiftCertificateDAOImpl
         return executeQuery(
                 GiftCertificateQueries.SELECT_ALL_CERTIFICATES.getValue()
         );
+    }
+
+    @Override
+    public List<GiftCertificate> getWithFilter(Map<String, String> params) {
+        String query = new QueryBuilder().buildQueryWithFilters(
+                GiftCertificateQueries.SELECT_CERTIFICATE_ID.getValue(),
+                params
+        );
+
+        List<Long> ids = jdbcTemplate.queryForList(query, Long.class);
+        return ids.stream().distinct().map((this::getEntityById)).toList();
     }
 
     @Override
@@ -124,11 +142,18 @@ public class GiftCertificateDAOImpl
     public void update(GiftCertificate item) {
         item.setLastUpdateDate(String.valueOf(LocalDateTime.now()));
         Map<String, String> params = giftCertificateFieldExtractor.extractData(item);
-        int affectedRows = executeUpdateQuery(
-                new QueryBuilder().buildUpdateQuery(
-                        GiftCertificateQueries.UPDATE_CERTIFICATE.getValue(),
-                        params)
-        );
+        int affectedRows;
+
+        try {
+            affectedRows = executeUpdateQuery(
+                    new QueryBuilder().buildUpdateQuery(
+                            GiftCertificateQueries.UPDATE_CERTIFICATE.getValue(),
+                            params)
+            );
+        } catch (BadSqlGrammarException e) {
+            throw new ExecuteQueryRequestException();
+        }
+
         if (affectedRows == 0) {
             throw new DataNotFoundException(
                     "Could not find entity with this id:" + item.getId()
@@ -137,21 +162,6 @@ public class GiftCertificateDAOImpl
         if (item.getTags() != null) {
             updateCertificateTags(item);
         }
-    }
-
-    @Override
-    public List<GiftCertificate> getWithFilter(Map<String, String> params) {
-        return null;
-    }
-
-    private long getCreatedId(KeyHolder keyHolder){
-        List<Map<String, Object>> keys = keyHolder.getKeyList();
-        if (keys == null) {
-            throw new SaveException(
-                    "GiftCertificate with id " + keyHolder.getKey() + " cannot be saved in the database"
-            );
-        }
-        return (long) keys.get(0).get("GENERATED_KEY");
     }
 
     private void addNewTagsToCertificate(GiftCertificate entity) {
@@ -168,7 +178,13 @@ public class GiftCertificateDAOImpl
     private List<Tag> createTagsWithId(List<Tag> requestTags) {
         List<Tag> newTagsWithId = new ArrayList<>(requestTags.size());
         requestTags.forEach((element) -> {
-            Tag tagWithId = tagDAO.getByName(element.getName());
+            Tag tagWithId;
+            try {
+                tagWithId = tagDAO.getByValue(element.getValue());
+            } catch (DataNotFoundException e) {
+                tagDAO.insert(element);
+                tagWithId = tagDAO.getByValue(element.getValue());
+            }
             newTagsWithId.add(tagWithId);
         });
         return newTagsWithId;

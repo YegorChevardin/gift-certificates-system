@@ -13,7 +13,7 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum TagColumns {
     ID("id"),
-    NAME("name");
+    NAME("value");
 
     @Getter
     private final String value;

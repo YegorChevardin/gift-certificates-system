@@ -24,7 +24,7 @@ public class TagExtractor implements ResultSetExtractor<List<Tag>> {
         while (rs.next()) {
             Tag tag = new Tag();
             tag.setId(rs.getLong(TagColumns.ID.getValue()));
-            tag.setName(rs.getString(TagColumns.NAME.getValue()));
+            tag.setValue(rs.getString(TagColumns.NAME.getValue()));
             tags.add(tag);
         }
         return tags;

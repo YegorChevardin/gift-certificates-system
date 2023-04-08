@@ -2,6 +2,8 @@ package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dao;
 
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.entities.GiftCertificate;
 
+import java.util.List;
+
 /**
  * Interface for abstraction of GiftCertificateDAO
  * @author Yehor Chevardin
@@ -13,7 +15,7 @@ public interface GiftCertificateDAO
     /**
      * Retrieves a GiftCertificate entity by its name
      * @param name entity name
-     * @return an {@link Tag} entity
+     * @return an GiftCertificate entity
      */
     GiftCertificate getByName(String name);
 }
