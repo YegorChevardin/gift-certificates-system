@@ -1,6 +1,7 @@
 package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,6 +17,7 @@ import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dao.tools.extract
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.entities.GiftCertificate;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.entities.Tag;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.exceptions.DataNotFoundException;
+import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.exceptions.ExecuteQueryRequestException;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.exceptions.SaveException;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -124,11 +126,18 @@ public class GiftCertificateDAOImpl
     public void update(GiftCertificate item) {
         item.setLastUpdateDate(String.valueOf(LocalDateTime.now()));
         Map<String, String> params = giftCertificateFieldExtractor.extractData(item);
-        int affectedRows = executeUpdateQuery(
-                new QueryBuilder().buildUpdateQuery(
-                        GiftCertificateQueries.UPDATE_CERTIFICATE.getValue(),
-                        params)
-        );
+        int affectedRows;
+
+        try {
+            affectedRows = executeUpdateQuery(
+                    new QueryBuilder().buildUpdateQuery(
+                            GiftCertificateQueries.UPDATE_CERTIFICATE.getValue(),
+                            params)
+            );
+        } catch (BadSqlGrammarException e) {
+            throw new ExecuteQueryRequestException();
+        }
+
         if (affectedRows == 0) {
             throw new DataNotFoundException(
                     "Could not find entity with this id:" + item.getId()
@@ -142,16 +151,6 @@ public class GiftCertificateDAOImpl
     @Override
     public List<GiftCertificate> getWithFilter(Map<String, String> params) {
         return null;
-    }
-
-    private long getCreatedId(KeyHolder keyHolder){
-        List<Map<String, Object>> keys = keyHolder.getKeyList();
-        if (keys == null) {
-            throw new SaveException(
-                    "GiftCertificate with id " + keyHolder.getKey() + " cannot be saved in the database"
-            );
-        }
-        return (long) keys.get(0).get("GENERATED_KEY");
     }
 
     private void addNewTagsToCertificate(GiftCertificate entity) {
@@ -168,7 +167,13 @@ public class GiftCertificateDAOImpl
     private List<Tag> createTagsWithId(List<Tag> requestTags) {
         List<Tag> newTagsWithId = new ArrayList<>(requestTags.size());
         requestTags.forEach((element) -> {
-            Tag tagWithId = tagDAO.getByName(element.getName());
+            Tag tagWithId;
+            try {
+                tagWithId = tagDAO.getByName(element.getName());
+            } catch (DataNotFoundException e) {
+                tagDAO.insert(element);
+                tagWithId = tagDAO.getByName(element.getName());
+            }
             newTagsWithId.add(tagWithId);
         });
         return newTagsWithId;

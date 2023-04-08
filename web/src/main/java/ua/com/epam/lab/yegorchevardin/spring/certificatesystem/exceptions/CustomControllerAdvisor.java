@@ -47,7 +47,7 @@ public class CustomControllerAdvisor extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * Method for handling DataFoundException, which will return 404 error
+     * Method for handling DataFoundException, which will return 400 error
      */
     @ExceptionHandler(DataFoundException.class)
     public ResponseEntity<Object> handleDataFoundException(Exception exception) {
@@ -58,7 +58,8 @@ public class CustomControllerAdvisor extends ResponseEntityExceptionHandler {
      * Method for handling SaveException, which will return 400 error
      */
     @ExceptionHandler({
-            SaveException.class
+            SaveException.class,
+            ExecuteQueryRequestException.class
     })
     public ResponseEntity<Map<String, String>> handleSaveException(Exception exception) {
         return new ResponseEntity<>(

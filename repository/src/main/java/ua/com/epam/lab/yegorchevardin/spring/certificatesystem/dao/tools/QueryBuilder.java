@@ -54,7 +54,7 @@ public class QueryBuilder {
         updatableParams.forEach((key, value) -> {
             updateQuery.append(key)
                     .append("=")
-                    .append('\'').append(value).append('\'')
+                    .append('"').append(value).append('"')
                     .append(", ");
         });
         updateQuery.deleteCharAt(updateQuery.length() - 2);
