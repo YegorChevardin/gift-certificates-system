@@ -11,14 +11,14 @@ public class TagConvertorImpl implements TagConvertor {
     public TagDTO convertToDTO(Tag entity) {
         TagDTO tagDTO = new TagDTO();
         tagDTO.setId(entity.getId());
-        tagDTO.setName(entity.getName());
+        tagDTO.setName(entity.getValue());
         return tagDTO;
     }
 
     @Override
     public Tag convertToEntity(TagDTO dto) {
         Tag tag = new Tag();
-        tag.setName(dto.getName());
+        tag.setValue(dto.getName());
         return tag;
     }
 }

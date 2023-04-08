@@ -15,5 +15,5 @@ public interface TagDAO
      * @param name entity name
      * @return an {@link Tag} entity
      */
-    Tag getByName(String name);
+    Tag getByValue(String name);
 }

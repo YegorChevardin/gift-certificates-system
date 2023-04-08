@@ -47,9 +47,12 @@ public class CustomControllerAdvisor extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * Method for handling DataFoundException, which will return 400 error
+     * Method for handling DataFoundException and IncorrectParameterException, which will return 400 error
      */
-    @ExceptionHandler(DataFoundException.class)
+    @ExceptionHandler({
+            DataFoundException.class,
+            IncorrectSortingParameter.class
+    })
     public ResponseEntity<Object> handleDataFoundException(Exception exception) {
         return wrapExceptionToMap(exception, HttpStatus.UNPROCESSABLE_ENTITY);
     }

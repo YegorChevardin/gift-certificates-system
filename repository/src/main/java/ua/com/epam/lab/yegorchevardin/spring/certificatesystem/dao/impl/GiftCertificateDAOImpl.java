@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * DAO class for GiftCertificate entities to get them from database
@@ -52,6 +53,10 @@ public class GiftCertificateDAOImpl
 
     @Override
     public GiftCertificate getById(Long id) {
+        return getEntityById(id);
+    }
+
+    private GiftCertificate getEntityById(Long id) {
         return executeQueryAsSingleEntity(
                 GiftCertificateQueries.SELECT_CERTIFICATE_BY_ID.getValue(),
                 id
@@ -79,6 +84,17 @@ public class GiftCertificateDAOImpl
         return executeQuery(
                 GiftCertificateQueries.SELECT_ALL_CERTIFICATES.getValue()
         );
+    }
+
+    @Override
+    public List<GiftCertificate> getWithFilter(Map<String, String> params) {
+        String query = new QueryBuilder().buildQueryWithFilters(
+                GiftCertificateQueries.SELECT_CERTIFICATE_ID.getValue(),
+                params
+        );
+
+        List<Long> ids = jdbcTemplate.queryForList(query, Long.class);
+        return ids.stream().distinct().map((this::getEntityById)).toList();
     }
 
     @Override
@@ -148,11 +164,6 @@ public class GiftCertificateDAOImpl
         }
     }
 
-    @Override
-    public List<GiftCertificate> getWithFilter(Map<String, String> params) {
-        return null;
-    }
-
     private void addNewTagsToCertificate(GiftCertificate entity) {
         List<Tag> newTags = createTagsWithId(entity.getTags());
         newTags.forEach((element) -> {
@@ -169,10 +180,10 @@ public class GiftCertificateDAOImpl
         requestTags.forEach((element) -> {
             Tag tagWithId;
             try {
-                tagWithId = tagDAO.getByName(element.getName());
+                tagWithId = tagDAO.getByValue(element.getValue());
             } catch (DataNotFoundException e) {
                 tagDAO.insert(element);
-                tagWithId = tagDAO.getByName(element.getName());
+                tagWithId = tagDAO.getByValue(element.getValue());
             }
             newTagsWithId.add(tagWithId);
         });

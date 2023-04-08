@@ -5,6 +5,8 @@ import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.constants.GiftCer
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.constants.SortingParameters;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.constants.TagColumns;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.exceptions.DataNotFoundException;
+import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.exceptions.IncorrectSortingParameter;
+
 import java.util.Map;
 
 /**
@@ -35,7 +37,7 @@ public class QueryBuilder {
             } else if (param.equals(SortingParameters.TAG_SORT.getValue())) {
                 addSortParameter(query, TagColumns.NAME.getValue(), value);
             } else {
-                throw new DataNotFoundException("Such parameter was not found: " + param);
+                throw IncorrectSortingParameter.createIncorrectParameterException(param);
             }
         });
         return query.toString();
@@ -68,7 +70,7 @@ public class QueryBuilder {
         } else {
             query.append(" where ");
         }
-        query.append(param).append(" ilike '%").append(value).append("%' ");
+        query.append("lower(").append(param).append(")").append(" like '%").append(value).append("%' ");
     }
 
     private void addSortParameter(StringBuilder query, String param, String value) {

@@ -46,7 +46,7 @@ public class TagServiceImpl implements TagService {
 
     private boolean checkIfExistByTagName(String name) {
         try {
-            tagDAO.getByName(name);
+            tagDAO.getByValue(name);
         } catch (DataNotFoundException ignored) {
             return false;
         }

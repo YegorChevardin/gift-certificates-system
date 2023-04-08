@@ -43,7 +43,7 @@ public class TagDAOImpl extends AbstractDAO<Tag> implements TagDAO {
     @Transactional
     @Override
     public void insert(Tag entity) {
-        executeUpdateQuery(TagQueries.INSERT_TAGS.getValue(), entity.getName());
+        executeUpdateQuery(TagQueries.INSERT_TAGS.getValue(), entity.getValue());
     }
 
     @Override
@@ -66,7 +66,7 @@ public class TagDAOImpl extends AbstractDAO<Tag> implements TagDAO {
     }
 
     @Override
-    public Tag getByName(String name) {
+    public Tag getByValue(String name) {
         return executeQueryAsSingleEntity(TagQueries.SELECT_BY_NAME.getValue(), name)
                 .orElseThrow(
                         () -> new DataNotFoundException("Cannot find tag with this name: " + name)

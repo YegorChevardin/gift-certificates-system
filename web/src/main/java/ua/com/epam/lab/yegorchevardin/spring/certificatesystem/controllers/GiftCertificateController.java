@@ -3,6 +3,7 @@ package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.controllers;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,8 @@ import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.dtos.GiftCertific
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.responces.impl.GiftCertificateListResponse;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.responces.impl.GiftCertificateResponse;
 import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.services.GiftCertificateService;
+
+import java.util.Map;
 
 /**
  * Controller for handling responses for GiftCertificateDTO
@@ -25,13 +28,40 @@ public class GiftCertificateController {
 
     /**
      * Method for getting all gift certificates
-     * @return ResponseEntity<TagListResponse> response entity with all gift certificates
+     * @return response entity with all gift certificates
      */
     @GetMapping
     public ResponseEntity<GiftCertificateListResponse> showAllGiftCertificates() {
         return ResponseEntity.ok(
                 new GiftCertificateListResponse(
                         giftCertificateService.getAll()
+                )
+        );
+    }
+
+    /**
+     * Method for getting gift_certificates by some filter
+     */
+    @GetMapping("/filter")
+    public ResponseEntity<GiftCertificateListResponse> showFilteredGiftCertificates(
+            @RequestParam Map<String, String> parameters
+            ) {
+        return ResponseEntity.ok(
+                new GiftCertificateListResponse(
+                        giftCertificateService.getGiftCertificatesDTOByParameter(parameters)
+                )
+        );
+    }
+
+    /**
+     * Method for handling finding gift certificate by name
+     */
+    @GetMapping("/{name}")
+    public ResponseEntity<GiftCertificateResponse> showGiftCertificate(
+            @PathVariable @Length(min = 2, max = 45, message = "Name must be more than 2 and less than 45 characters") String name) {
+        return ResponseEntity.ok(
+                new GiftCertificateResponse(
+                        giftCertificateService.getGiftCertificateDTOByName(name)
                 )
         );
     }
