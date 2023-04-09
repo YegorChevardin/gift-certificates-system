@@ -1,5 +1,6 @@
 subprojects {
     apply plugin: "java"
+    apply plugin: "jacoco"
     group "ua.com.epam.lab.yegorchevardin.spring.certificatesystem"
     version "1.0.0"
 
@@ -26,6 +27,24 @@ subprojects {
 
     test {
         useJUnitPlatform()
+        finalizedBy jacocoTestReport
+    }
+
+    jacocoTestReport {
+        dependsOn test
+    }
+
+    jacoco {
+        toolVersion = "0.8.8"
+        reportsDirectory = layout.buildDirectory.dir('jacocoReportDir')
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.required = false
+            csv.required = false
+            html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+        }
     }
 
     if (name == "repository" || name == "service") {

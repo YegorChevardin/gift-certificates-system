@@ -1,6 +1,7 @@
 dependencies {
     implementation project(':repository')
     testImplementation "org.mockito:mockito-core:5.2.0"
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
 }
 
 jar {

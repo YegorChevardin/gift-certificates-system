@@ -1,6 +1,9 @@
 package ua.com.epam.lab.yegorchevardin.spring.certificatesystem.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +14,8 @@ import java.util.List;
  * @version 1.0.0
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class GiftCertificate {
     private Long id;
     private String name;
