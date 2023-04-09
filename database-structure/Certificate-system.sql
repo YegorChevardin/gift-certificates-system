@@ -24,11 +24,12 @@ CREATE TABLE IF NOT EXISTS `gift_certificates` (
   `name` VARCHAR(45) NOT NULL,
   `description` TEXT(500) NULL,
   `price` FLOAT NOT NULL,
-  `duration` DATETIME NOT NULL,
+  `duration` INT NOT NULL,
   `create_date` TIMESTAMP NOT NULL,
   `last_update_date` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
@@ -39,9 +40,10 @@ DROP TABLE IF EXISTS `tags` ;
 
 CREATE TABLE IF NOT EXISTS `tags` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
+  `value` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
+  UNIQUE INDEX `name_UNIQUE` (`value` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 

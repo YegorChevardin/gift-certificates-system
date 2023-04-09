@@ -1,5 +1,6 @@
 subprojects {
     apply plugin: "java"
+    apply plugin: "jacoco"
     group "ua.com.epam.lab.yegorchevardin.spring.certificatesystem"
     version "1.0.0"
 
@@ -9,14 +10,16 @@ subprojects {
 
     ext {
         springVersion = "6.0.7"
+        lombokDependency = "org.projectlombok:lombok:1.18.26"
     }
 
     dependencies {
-        compileOnly "org.projectlombok:lombok:1.18.26"
+        compileOnly lombokDependency
+        annotationProcessor lombokDependency
 
+        implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
         implementation "org.springframework:spring-core:${springVersion}"
         implementation "org.springframework:spring-context:${springVersion}"
-
         testImplementation "org.springframework:spring-test:${springVersion}"
         testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.1"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.1"
@@ -24,6 +27,24 @@ subprojects {
 
     test {
         useJUnitPlatform()
+        finalizedBy jacocoTestReport
+    }
+
+    jacocoTestReport {
+        dependsOn test
+    }
+
+    jacoco {
+        toolVersion = "0.8.8"
+        reportsDirectory = layout.buildDirectory.dir('jacocoReportDir')
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.required = false
+            csv.required = false
+            html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+        }
     }
 
     if (name == "repository" || name == "service") {
