@@ -11,6 +11,11 @@ import ua.com.epam.lab.yegorchevardin.spring.certificatesystem.exceptions.Incorr
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Test class for QueryBuilder
+ * @author Yehor Chevardin
+ * @version 1.0.0
+ */
 public class QueryBuilderTest {
     private final QueryBuilder queryBuilder = new QueryBuilder();
     private static final String TAG_QUERY = "select * from tags ";
@@ -26,7 +31,7 @@ public class QueryBuilderTest {
     private static final String INCORRECT_FILTER_PARAMETER = "incorrect parameter";
 
     @Test
-    void buildQueryWithFiltersTest_CorrectTagParams() {
+    public void buildQueryWithFiltersTest_CorrectTagParams() {
         Map<String, String> parameters = new LinkedHashMap<>();
 
         parameters.put(TagColumns.NAME.getValue(), CORRECT_TAG_NAME);
@@ -40,7 +45,7 @@ public class QueryBuilderTest {
     }
 
     @Test
-    void buildQueryWithFiltersTest_WithIncorrectParam() {
+    public void buildQueryWithFiltersTest_WithIncorrectParam() {
         Map<String, String> parameters = new LinkedHashMap<>();
 
         parameters.put(TagColumns.NAME.getValue(), CORRECT_TAG_NAME);
@@ -53,7 +58,7 @@ public class QueryBuilderTest {
     }
 
     @Test
-    void buildQueryWithFiltersTest_CorrectCertificateParams() {
+    public void buildQueryWithFiltersTest_CorrectCertificateParams() {
         Map<String, String> parameters = new LinkedHashMap<>();
 
         parameters.put(GiftCertificateColumns.NAME.getValue(), CORRECT_CERTIFICATE_NAME);
@@ -73,7 +78,7 @@ public class QueryBuilderTest {
     }
 
     @Test
-    void buildUpdateQueryTest() {
+    public void buildUpdateQueryTest() {
         Map<String, String> parameters = new LinkedHashMap<>();
 
         parameters.put(GiftCertificateColumns.NAME.getValue(), CORRECT_CERTIFICATE_NAME);
